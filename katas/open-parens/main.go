@@ -38,11 +38,9 @@ func main() {
 			}
 			handleLine(line)
 		case io.EOF:
-			/*
-				This line should be enabled, but the last testcase on the site is an empty line
-				and it does not accept my program outputting 'yes' for that. :(
-			*/
-			// handleLine(line)
+			if len(line) >= 1 {
+				handleLine(line)
+			}
 			os.Exit(0)
 		default:
 			fmt.Fprintln(os.Stderr, "error:", err)
