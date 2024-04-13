@@ -11,9 +11,9 @@ fi
 
 self_dir=$(dirname "$0")
 kata_dir=$(realpath "$self_dir/../katas")
-kata_source="$kata_dir/$kata.go"
-kata_in="$kata_dir/samples/$kata.in"
-kata_out="$kata_dir/samples/$kata.out"
+kata_source="$kata_dir/$kata/main.go"
+kata_in="$kata_dir/$kata/sample.in"
+kata_out="$kata_dir/$kata/sample.out"
 
 if ! command -v go &>/dev/null; then
     echo "go command not found" >&2
