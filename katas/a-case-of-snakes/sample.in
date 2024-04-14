@@ -1,0 +1,16 @@
+airDangerLevel
+i16ThrustCoeff
+dwThrustDangerLevel
+pilotTubeGauge
+u32AirRatio
+fMixture2Coeff
+fnAirflowCoeff
+u32PilotTubeMass
+u64MixtureDangerLevel
+chThrottle2Gauge
+pThrottleMass
+dwPilotTubeWarnLevel
+pAirflowParameter
+u64AirflowWarnLevel
+dwMix2DangerLevel
+u32AirflowDangerLevel

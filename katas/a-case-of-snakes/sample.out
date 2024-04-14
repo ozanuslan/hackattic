@@ -1,0 +1,16 @@
+air_danger_level
+thrust_coeff
+thrust_danger_level
+pilot_tube_gauge
+air_ratio
+mixture2_coeff
+airflow_coeff
+pilot_tube_mass
+mixture_danger_level
+throttle2_gauge
+throttle_mass
+pilot_tube_warn_level
+airflow_parameter
+airflow_warn_level
+mix2_danger_level
+airflow_danger_level
