@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+# This script runs a kata solution and compares the output with the expected output.
+
 set -euo pipefail
 
 kata=${1-}

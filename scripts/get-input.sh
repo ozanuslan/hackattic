@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+# This script fetches the input for a challenge and saves it to the challenge input file.
+
 set -euo pipefail
 
 challenge=${1-}
