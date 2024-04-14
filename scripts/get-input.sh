@@ -13,7 +13,7 @@ self_dir=$(dirname "$0")
 env_path="$self_dir/../.env"
 challenges_dir=$(realpath "$self_dir/../challenges")
 challenge_dir="$challenges_dir/$challenge"
-challenge_input="$challenge_dir/challenge.in"
+challenge_in="$challenge_dir/challenge.in"
 
 if [ ! -d "$challenge_dir" ]; then
     echo "Challenge directory not found: $challenge_dir" >&2
@@ -29,6 +29,6 @@ if ! command -v curl &>/dev/null; then
     exit 1
 fi
 
-curl -s "$challenge_input_url" > "$challenge_input"
+curl -s "$challenge_input_url" > "$challenge_in"
 
-echo "Input saved to: $challenge_input"
+echo "Input saved to: $challenge_in"
