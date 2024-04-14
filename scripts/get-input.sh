@@ -29,6 +29,6 @@ if ! command -v curl &>/dev/null; then
     exit 1
 fi
 
-curl -s "$challenge_input_url" > "$challenge_in"
+curl -s "$challenge_input_url" >"$challenge_in"
 
 echo "Input saved to: $challenge_in"
