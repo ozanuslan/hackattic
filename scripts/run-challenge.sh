@@ -55,7 +55,7 @@ if [ "$verify" = true ]; then
     "$get_input_script" "$challenge" >&2
 fi
 
-program_out_buf=$(go run "$challenge_source" <"$challenge_in")
+program_out_buf=$(cd "$challenge_dir" && go run "$challenge_source" <"$challenge_in")
 
 echo "$program_out_buf" >"$challenge_out"
 echo "Output saved to: $challenge_out" >&2
