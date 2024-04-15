@@ -1,13 +1,21 @@
 #! /usr/bin/env bash
 
 # This script verifies a challenge solution by sending the output to the Hackattic API.
+# You can use the playground option to verify the challenge after you've passed.
 
 set -euo pipefail
 
 challenge=${1-}
 
-if [ -z "$challenge" ]; then
-    echo "Usage: $0 <challenge>" >&2
+playground=false
+if [ "$challenge" = "--playground" ] || [ "$challenge" = "-p" ]; then
+    playground=true
+    challenge=${2-}
+fi
+
+if [ -z "$challenge" ] || [ "$challenge" = "--help" ] || [ "$challenge" = "-h" ]; then
+    echo "Usage: $0 [flags] <challenge>" >&2
+    echo "Options: --playground,-p    Verify the challenge in playground mode" >&2
     exit 1
 fi
 
@@ -30,6 +38,10 @@ fi
 . "$env_path"
 
 challenge_solve_url="https://hackattic.com/challenges/$challenge/solve?access_token=$ACCESS_TOKEN"
+
+if [ "$playground" = true ]; then
+    challenge_solve_url="$challenge_solve_url&playground=1"
+fi
 
 if ! command -v curl &>/dev/null; then
     echo "curl command not found" >&2
