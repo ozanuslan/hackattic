@@ -36,6 +36,11 @@ if [ ! -f "$challenge_in" ]; then
     exit 1
 fi
 
+if [ "$verify" = true ]; then
+    get_input_script="$self_dir/get-challenge-input.sh"
+    "$get_input_script" "$challenge"
+fi
+
 program_out_buf=$(go run "$challenge_source" <"$challenge_in")
 
 echo "$program_out_buf" >"$challenge_out"
