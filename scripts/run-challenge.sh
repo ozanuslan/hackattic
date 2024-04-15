@@ -11,15 +11,15 @@ playground=false
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        --verify|-v)
-            verify=true
-            ;;
-        --playground|-p)
-            playground=true
-            ;;
-        *)
-            break
-            ;;
+    --verify | -v)
+        verify=true
+        ;;
+    --playground | -p)
+        playground=true
+        ;;
+    *)
+        break
+        ;;
     esac
     shift
 done
@@ -37,6 +37,7 @@ self_dir=$(dirname "$0")
 challenges_dir=$(realpath "$self_dir/../challenges")
 challenge_dir="$challenges_dir/$challenge"
 challenge_source="$challenge_dir/main.go"
+challenge_runner="$challenge_dir/run.sh"
 challenge_in="$challenge_dir/challenge.in"
 challenge_out="$challenge_dir/challenge.out"
 
@@ -55,7 +56,11 @@ if [ "$verify" = true ]; then
     "$get_input_script" "$challenge" >&2
 fi
 
-program_out_buf=$(cd "$challenge_dir" && go run "$challenge_source" <"$challenge_in")
+if [ ! -f "$challenge_runner" ]; then
+    program_out_buf=$(cd "$challenge_dir" && go run "$challenge_source" <"$challenge_in")
+else
+    program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in")
+fi
 
 echo "$program_out_buf" >"$challenge_out"
 echo "Output saved to: $challenge_out" >&2
