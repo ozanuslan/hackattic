@@ -34,12 +34,16 @@ if [ -z "$challenge" ]; then
 fi
 
 self_dir=$(dirname "$0")
+env_path="$self_dir/../.env"
 challenges_dir=$(realpath "$self_dir/../challenges")
 challenge_dir="$challenges_dir/$challenge"
 challenge_source="$challenge_dir/main.go"
 challenge_runner="$challenge_dir/run.sh"
 challenge_in="$challenge_dir/challenge.in"
 challenge_out="$challenge_dir/challenge.out"
+
+. "$env_path"
+export ACCESS_TOKEN
 
 if [ ! -d "$challenge_dir" ]; then
     echo "Challenge directory not found: $challenge_dir" >&2
