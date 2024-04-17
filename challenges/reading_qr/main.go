@@ -48,14 +48,13 @@ func main() {
 	img, _, err := image.Decode(resp.Body)
 	e(err)
 
-	qrCodes, err := goqr.Recognize(img)
+	qrData, err := goqr.Recognize(img)
 	e(err)
-	if len(qrCodes) != 1 {
-		panic(fmt.Errorf("err: expected to read 1 qrcode, got %d", len(qrCodes)))
+	if len(qrData) != 1 {
+		panic(fmt.Errorf("err: expected to read 1 qrdata, got %d", len(qrData)))
 	}
-	code := fmt.Sprintf("%s", qrCodes[0].Payload)
 
-	output := Output{Code: code}
+	output := Output{Code: string(qrData[0].Payload)}
 	out, err := json.Marshal(output)
 	e(err)
 
