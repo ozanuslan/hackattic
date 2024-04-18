@@ -3,6 +3,7 @@
 # This script runs a challenge solution and saves the output to the challenge output file.
 # It can also verify the challenge output by running the verify-challenge.sh script.
 # If you want to verify the challenge after you've passed, you can use the playground option.
+# If you want to get new input for the challenge, you can use the new-input option.
 
 set -euo pipefail
 
