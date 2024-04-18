@@ -8,6 +8,7 @@ set -euo pipefail
 
 verify=false
 playground=false
+new_input=false
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -16,6 +17,9 @@ while [ $# -gt 0 ]; do
         ;;
     --playground | -p)
         playground=true
+        ;;
+    --new-input | -n)
+        new_input=true
         ;;
     *)
         break
@@ -30,6 +34,7 @@ if [ -z "$challenge" ]; then
     echo "Usage: $0 [flags] <challenge>" >&2
     echo "Options: --verify,-v        Verify the challenge output" >&2
     echo "         --playground,-p    Run the challenge in playground mode" >&2
+    echo "         --new-input,-n     Get new challenge input" >&2
     exit 1
 fi
 
@@ -55,7 +60,7 @@ if [ ! -f "$challenge_in" ]; then
     exit 1
 fi
 
-if [ "$verify" = true ]; then
+if [[ "$verify" = true || "$new_input" = true ]]; then
     get_input_script="$self_dir/get-challenge-input.sh"
     "$get_input_script" "$challenge" >&2
 fi
