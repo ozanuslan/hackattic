@@ -125,15 +125,10 @@ func testNonce(n int) (string, bool) {
 			return "", false
 		}
 	}
-	found := true
 	for targetBit := 0; targetBit < zeroBits; targetBit++ {
 		if sum[i]&(1<<(7-targetBit)) != 0 {
-			found = false
-			break
+			return "", false
 		}
-	}
-	if !found {
-		return "", false
 	}
 	return fmt.Sprintf("%x", sum), true
 }
