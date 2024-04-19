@@ -44,9 +44,10 @@ func e(err error) {
 	}
 }
 
-var hashTemplate string
+var digestTemplate string
 var zeroBytes int
 var zeroBits int
+var sha string
 
 func main() {
 	stdin, err := io.ReadAll(os.Stdin)
@@ -62,13 +63,13 @@ func main() {
 	data, err := json.Marshal(input.Block.Data)
 	e(err)
 
-	hashTemplate = "{\"data\":" + string(data) + ",\"nonce\":%d}"
+	digestTemplate = "{\"data\":" + string(data) + ",\"nonce\":%d}"
 
 	inCh := make(chan int)
 	outCh := make(chan int)
 	done := make(chan interface{})
 
-	workerCount := runtime.NumCPU() * 4
+	workerCount := runtime.NumCPU()
 
 	var wg sync.WaitGroup
 	wg.Add(workerCount)
@@ -79,8 +80,6 @@ func main() {
 			wg.Done()
 		}()
 	}
-
-	fmt.Fprintf(os.Stderr, "difficulty: %d | ", input.Difficulty)
 
 	go func() {
 		for i := 0; i <= (1<<31 - 1); i++ {
@@ -96,6 +95,9 @@ func main() {
 	}()
 
 	nonce := <-outCh
+
+	fmt.Fprintf(os.Stderr, "difficulty: %d | nonce: %d | sha: %s\n", input.Difficulty, nonce, sha)
+
 	output := Output{Nonce: nonce}
 	out, err := json.Marshal(output)
 	e(err)
@@ -106,9 +108,8 @@ func main() {
 
 func work(in <-chan int, out chan<- int, done chan<- interface{}) {
 	for nonce := range in {
-		s, found := testNonce(nonce)
+		found := testNonce(nonce)
 		if found {
-			fmt.Fprintf(os.Stderr, "nonce: %d | sha: %s \n", nonce, s)
 			out <- nonce
 			close(done)
 			return
@@ -116,19 +117,20 @@ func work(in <-chan int, out chan<- int, done chan<- interface{}) {
 	}
 }
 
-func testNonce(n int) (string, bool) {
-	digest := fmt.Sprintf(hashTemplate, n)
+func testNonce(n int) bool {
+	digest := fmt.Sprintf(digestTemplate, n)
 	sum := sha256.Sum256([]byte(digest))
 	var i int
 	for i = 0; i < zeroBytes; i++ {
 		if sum[i]|0 != 0 {
-			return "", false
+			return false
 		}
 	}
 	for targetBit := 0; targetBit < zeroBits; targetBit++ {
 		if sum[i]&(1<<(7-targetBit)) != 0 {
-			return "", false
+			return false
 		}
 	}
-	return fmt.Sprintf("%x", sum), true
+	sha = fmt.Sprintf("%x", sum)
+	return true
 }
