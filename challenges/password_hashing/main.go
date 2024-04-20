@@ -89,7 +89,12 @@ func main() {
 	p(err)
 	fmt.Fprintf(os.Stderr, "scrypt: %x\n", outScrypt)
 
-	output := Output{Sha256: hex.EncodeToString(outSha[:]), Hmac: hex.EncodeToString(outHmac), Pbkdf2: hex.EncodeToString(outPbkdf2), Scrypt: hex.EncodeToString(outScrypt)}
+	output := Output{
+		Sha256: hex.EncodeToString(outSha[:]),
+		Hmac:   hex.EncodeToString(outHmac),
+		Pbkdf2: hex.EncodeToString(outPbkdf2),
+		Scrypt: hex.EncodeToString(outScrypt),
+	}
 	out, err := json.Marshal(output)
 	p(err)
 
