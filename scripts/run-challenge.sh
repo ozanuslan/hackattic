@@ -48,8 +48,14 @@ challenge_runner="$challenge_dir/run.sh"
 challenge_in="$challenge_dir/challenge.in"
 challenge_out="$challenge_dir/challenge.out"
 
+verify_script=$(realpath "$self_dir/verify-challenge.sh")
+get_input_script=$(realpath "$self_dir/get-challenge-input.sh")
+
+
 . "$env_path"
 export ACCESS_TOKEN
+export NGROK_AUTH_TOKEN
+export NGROK_DOMAIN
 
 if [ ! -d "$challenge_dir" ]; then
     echo "Challenge directory not found: $challenge_dir" >&2
@@ -62,21 +68,30 @@ if [[ ! -f "$challenge_in" && "$new_input" != true ]]; then
 fi
 
 if [[ "$verify" = true || "$new_input" = true ]]; then
-    get_input_script="$self_dir/get-challenge-input.sh"
     "$get_input_script" "$challenge" >&2
 fi
 
 if [ ! -f "$challenge_runner" ]; then
     program_out_buf=$(cd "$challenge_dir" && go run "$challenge_source" <"$challenge_in")
 else
-    program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in")
+    # exit code 254 => challenge is handled by the runner script
+    export CHALLENGE_OUT="$challenge_out"
+    export VERIFY_SCRIPT="$verify_script"
+    program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in") || exit_code=$?
+    if [ "${exit_code-0}" -eq 254 ]; then
+        echo "Runner exited successfully" >&2
+        exit 0
+    else
+        if [ "${exit_code-0}" -ne 0 ]; then
+            exit $exit_code
+        fi
+    fi
 fi
 
 echo "$program_out_buf" >"$challenge_out"
 echo "Output saved to: $challenge_out" >&2
 
 if [ "$verify" = true ]; then
-    verify_script="$self_dir/verify-challenge.sh"
     if [ "$playground" = true ]; then
         "$verify_script" --playground "$challenge"
     else
