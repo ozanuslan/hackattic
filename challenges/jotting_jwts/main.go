@@ -59,13 +59,15 @@ func main() {
 		}
 		body, err := io.ReadAll(r.Body)
 		p(err)
-		log.Println("token:", string(body))
+
+		log.Println("Token:", string(body))
 		token, err := jwt.Parse(string(body), func(t *jwt.Token) (interface{}, error) {
 			return []byte(jwtSecret), nil
 		})
 		if err != nil {
 			return
 		}
+
 		var append string
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
 			if a, ok := claims["append"]; ok {
@@ -75,6 +77,7 @@ func main() {
 				}
 			}
 		}
+
 		if append != "" {
 			appendedString += append
 			log.Println("Append:", append)
