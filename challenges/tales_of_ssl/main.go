@@ -10,6 +10,7 @@ import (
 	"io"
 	"math/big"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/biter777/countries"
@@ -62,11 +63,16 @@ func main() {
 	pub := priv.Public()
 	country := input.RequiredData.Country
 	countryCode := countries.ByName(country).Alpha2()
+	if countryCode == "Unknown" { // Tokelau Islands, Keeling Islands, Cocos Islands
+		countryCode = countries.ByName(strings.Split(country, " ")[0]).Alpha2()
+	}
 	domain := input.RequiredData.Domain
 	serialNumber, ok := new(big.Int).SetString(input.RequiredData.SerialNumber, 0)
 	if !ok {
 		panic(fmt.Errorf("err: unable to create big int from serial_number %s", input.RequiredData.SerialNumber))
 	}
+
+	fmt.Fprintf(os.Stderr, "serial_number: %s\ncountry: %s | country_code: %s\ndomain: %s\n", serialNumber.String(), country, countryCode, domain)
 
 	ca := x509.Certificate{
 		SerialNumber: serialNumber,
