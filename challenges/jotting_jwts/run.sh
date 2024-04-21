@@ -18,4 +18,7 @@ fi
 
 echo -n "{\"app_url\":\"https://$NGROK_DOMAIN\"}"
 
-exec $(docker run -i -p 1337:1337 --rm --name "$container_name" "$img_name" </dev/stdin >/dev/null 2> >(while read -r line; do echo "[container] $line">&2; done) & sleep 1)
+exec $(
+    docker run -i -p 1337:1337 --rm --name "$container_name" "$img_name" </dev/stdin >/dev/null 2> >(while read -r line; do echo "[container] $line" >&2; done) &
+    sleep 1
+)

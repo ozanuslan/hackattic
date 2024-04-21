@@ -1,10 +1,9 @@
 #! /usr/bin/env bash
 
-export challenge_name="jotting_jwts"
 export img_name="hackattic_jotting_jwts"
 export container_name="jotting_jwts"
 
-export ngrok_img_name="ngrok/ngrok:latest"
+export ngrok_img_name="docker.io/ngrok/ngrok:latest"
 export ngrok_container_name="ngrok"
 
 function challenge_exit() {
