@@ -62,7 +62,7 @@ if [ ! -d "$challenge_dir" ]; then
     exit 1
 fi
 
-if [[ ! -f "$challenge_in" && "$new_input" != true ]]; then
+if [[ ! -f "$challenge_in" && "$new_input" != true && "$verify" != true ]]; then
     echo "Challenge input file not found: $challenge_in" >&2
     exit 1
 fi
