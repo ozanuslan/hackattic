@@ -80,14 +80,9 @@ func main() {
 			Country:    []string{countryCode},
 			CommonName: domain,
 		},
-		DNSNames:              []string{domain},
-		NotBefore:             time.Now(),
-		NotAfter:              time.Now().Add(5 * time.Minute),
-		KeyUsage:              x509.KeyUsageCertSign,
-		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-		SignatureAlgorithm:    x509.SHA256WithRSA,
-		BasicConstraintsValid: true,
-		IsCA:                  true,
+		NotBefore: time.Now(),
+		NotAfter:  time.Now().Add(5 * time.Minute),
+		IsCA:      true,
 	}
 
 	derBytes, err := x509.CreateCertificate(rand.Reader, &ca, &ca, pub, priv)
