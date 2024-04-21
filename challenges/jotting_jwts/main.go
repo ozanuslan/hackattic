@@ -65,6 +65,7 @@ func main() {
 			return []byte(jwtSecret), nil
 		})
 		if err != nil {
+			log.Println("Token parse err (skipping):", err)
 			return
 		}
 
