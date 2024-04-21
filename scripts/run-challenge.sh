@@ -45,12 +45,12 @@ challenges_dir=$(realpath "$self_dir/../challenges")
 challenge_dir="$challenges_dir/$challenge"
 challenge_source="$challenge_dir/main.go"
 challenge_runner="$challenge_dir/run.sh"
+challenge_after="$challenge_dir/after.sh"
 challenge_in="$challenge_dir/challenge.in"
 challenge_out="$challenge_dir/challenge.out"
 
 verify_script=$(realpath "$self_dir/verify-challenge.sh")
 get_input_script=$(realpath "$self_dir/get-challenge-input.sh")
-
 
 . "$env_path"
 export ACCESS_TOKEN
@@ -74,18 +74,10 @@ fi
 if [ ! -f "$challenge_runner" ]; then
     program_out_buf=$(cd "$challenge_dir" && go run "$challenge_source" <"$challenge_in")
 else
-    # exit code 254 => challenge is handled by the runner script
-    export CHALLENGE_OUT="$challenge_out"
-    export VERIFY_SCRIPT="$verify_script"
-    program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in") || exit_code=$?
-    if [ "${exit_code-0}" -eq 254 ]; then
-        echo "Runner exited successfully" >&2
-        exit 0
-    else
-        if [ "${exit_code-0}" -ne 0 ]; then
-            exit $exit_code
-        fi
+    if [ -f "$challenge_after" ]; then
+        trap "echo 'Running after challenge hook:'>&2 && bash $challenge_after" EXIT
     fi
+    program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in")
 fi
 
 echo "$program_out_buf" >"$challenge_out"
