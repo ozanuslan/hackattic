@@ -31,7 +31,7 @@ done
 
 challenge=${1-}
 
-if [ -z "$challenge" ]; then
+if [[ -z "$challenge" || "$challenge" = "--help" || "$challenge" = "-h" ]]; then
     echo "Usage: $0 [flags] <challenge>" >&2
     echo "Options: --verify,-v        Verify the challenge output" >&2
     echo "         --playground,-p    Run the challenge in playground mode" >&2
