@@ -84,7 +84,7 @@ else
     program_out_buf=$(cd "$challenge_dir" && bash "$challenge_runner" <"$challenge_in")
 fi
 
-echo "$program_out_buf" >"$challenge_out"
+echo -n "$program_out_buf" >"$challenge_out"
 echo "Output saved to: $challenge_out" >&2
 
 if [ "$verify" = true ]; then
