@@ -10,6 +10,7 @@ set -euo pipefail
 verify=false
 playground=false
 new_input=false
+help=false
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -22,6 +23,9 @@ while [ $# -gt 0 ]; do
     --new-input | -n)
         new_input=true
         ;;
+    --help | -h)
+        help=true
+        ;;
     *)
         break
         ;;
@@ -31,7 +35,7 @@ done
 
 challenge=${1-}
 
-if [[ -z "$challenge" || "$challenge" = "--help" || "$challenge" = "-h" ]]; then
+if [[ -z "$challenge" || "$help" = true ]]; then
     echo "Usage: $0 [flags] <challenge>" >&2
     echo "Options: --verify,-v        Verify the challenge output" >&2
     echo "         --playground,-p    Run the challenge in playground mode" >&2
