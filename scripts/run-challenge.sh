@@ -67,7 +67,7 @@ if [[ ! -f "$challenge_in" && "$new_input" != true && "$verify" != true ]]; then
     exit 1
 fi
 
-if [[ "$verify" = true || "$new_input" = true ]]; then
+if [[ "$new_input" = true || (! -f "$challenge_in" && "$verify" = true) ]]; then
     "$get_input_script" "$challenge" >&2
 fi
 
