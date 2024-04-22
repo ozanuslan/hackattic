@@ -40,6 +40,7 @@ if [[ -z "$challenge" || "$help" = true ]]; then
     echo "Options: --verify,-v        Verify the challenge output" >&2
     echo "         --playground,-p    Run the challenge in playground mode" >&2
     echo "         --new-input,-n     Get new challenge input" >&2
+    echo "         --help,-h          Show this help message" >&2
     exit 1
 fi
 
