@@ -114,6 +114,8 @@ func main() {
 func workRequestor(id int, proxyCh <-chan string, countryUpdateCh chan<- int, done <-chan interface{}) {
 	for {
 		select {
+		case <-done:
+			return
 		case proxy := <-proxyCh:
 			start := time.Now()
 			body, err := sendRequest(proxy)
@@ -126,8 +128,6 @@ func workRequestor(id int, proxyCh <-chan string, countryUpdateCh chan<- int, do
 
 			countries := strings.Split(body, ",")
 			countryUpdateCh <- len(countries)
-		case <-done:
-			return
 		}
 	}
 }
