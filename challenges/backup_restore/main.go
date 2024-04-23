@@ -85,6 +85,7 @@ func getSSNs() {
 		panic(err)
 	}
 	defer db.Close()
+	fmt.Fprintln(os.Stderr, "connected to db")
 
 	var ssns []string
 	rows, err := db.Query("SELECT ssn FROM public.criminal_records WHERE status = 'alive'")
@@ -92,12 +93,14 @@ func getSSNs() {
 		panic(err)
 	}
 	defer rows.Close()
+	fmt.Fprintln(os.Stderr, "querying db")
 
 	for rows.Next() {
 		var ssn string
 		if err := rows.Scan(&ssn); err != nil {
 			panic(err)
 		}
+		fmt.Fprintln(os.Stderr, "fetched ssn:", ssn)
 		ssns = append(ssns, ssn)
 	}
 
