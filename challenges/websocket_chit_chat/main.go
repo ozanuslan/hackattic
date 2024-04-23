@@ -95,7 +95,7 @@ func main() {
 		case strings.Contains(msgStr, "ouch!"):
 			log.Println("ouch! server is closing connectiong. too bad!")
 			exit = 1
-		case strings.Contains(msgStr, "expired"):
+		case strings.Contains(msgStr, "expired challenge token"):
 			log.Println("whoops! challenge token is expired.")
 			exit = 1
 		default:
