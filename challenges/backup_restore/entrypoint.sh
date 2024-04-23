@@ -2,7 +2,7 @@
 
 set -eu
 
-cat <<CONFIG > /etc/postgresql/10/main/pg_hba.conf
+cat <<CONFIG >/etc/postgresql/10/main/pg_hba.conf
 # TYPE  DATABASE        USER            ADDRESS             METHOD
 # "local" is for Unix domain socket connections only
 local   all             all                                 trust
