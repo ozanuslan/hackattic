@@ -37,7 +37,7 @@ func p(err error) {
 const sampleRate = 4000
 const wiggleRoom = 2
 
-// PS: This solutions seems flaky. The underlygin DTMF lib is not working 100% stable. Re-run if need be.
+// PS: This solutions seems flaky. The underlying DTMF lib is not 100% stable. Re-run if need be.
 
 func main() {
 	stdin, err := io.ReadAll(os.Stdin)
