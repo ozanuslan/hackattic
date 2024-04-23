@@ -28,6 +28,6 @@ exec $(
         --rm \
         -p 1337:1337 \
         --name "$container_name" \
-        "$img_name" </dev/stdin >/dev/null 2> >(while read -r line; do echo "[container] $line" >&2; done) &
+        "$img_name" <&0 >/dev/null 2> >(while read -r line; do echo "[container] $line" >&2; done) &
     sleep 1
 )
