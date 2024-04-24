@@ -12,7 +12,8 @@ if ! command -v docker &>/dev/null; then
 fi
 
 if [[ -z "$(docker images -q "$img_name")" || -n "${CLEAN_BUILD:-}" ]]; then
-    docker build -t "$img_name" . >&2
+    docker image prune --force --filter="label=$img_name" >&2
+    docker build --label "$img_name" -t "$img_name" . >&2
 fi
 
 docker run -i --rm -e "ACCESS_TOKEN=$ACCESS_TOKEN" "$img_name" <&0 2> >(while read -r line; do echo "[container] $line" >&2; done)

@@ -18,7 +18,8 @@ docker run -d \
     "$ngrok_img_name" http --domain="$NGROK_DOMAIN" 1337 >/dev/null
 
 if [[ -z "$(docker images -q "$img_name")" || -n "${CLEAN_BUILD:-}" ]]; then
-    docker build -t "$img_name" . >&2
+    docker image prune --force --filter="label=$img_name" >&2
+    docker build --label "$img_name" -t "$img_name" . >&2
 fi
 
 echo -n "{\"app_url\":\"https://$NGROK_DOMAIN\"}"
