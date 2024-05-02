@@ -10,6 +10,7 @@ set -euo pipefail
 verify=false
 playground=false
 new_input=false
+clean_build=false
 help=false
 
 while [ $# -gt 0 ]; do
@@ -22,6 +23,9 @@ while [ $# -gt 0 ]; do
         ;;
     --new-input | -n)
         new_input=true
+        ;;
+    --clean-build | -c)
+        clean_build=true
         ;;
     --help | -h)
         help=true
@@ -40,6 +44,7 @@ if [[ -z "$challenge" || "$help" = true ]]; then
     echo "Options: --verify,-v        Verify the challenge output" >&2
     echo "         --playground,-p    Run the challenge in playground mode" >&2
     echo "         --new-input,-n     Get new challenge input" >&2
+    echo "         --clean-build,-c   Clean build the challenge (if it has a container)" >&2
     echo "         --help,-h          Show this help message" >&2
     exit 1
 fi
@@ -61,6 +66,9 @@ get_input_script=$(realpath "$self_dir/get-challenge-input.sh")
 export ACCESS_TOKEN
 export NGROK_AUTH_TOKEN
 export NGROK_DOMAIN
+if [[ "$clean_build" = true ]]; then
+    export CLEAN_BUILD=1
+fi
 
 if [ ! -d "$challenge_dir" ]; then
     echo "Challenge directory not found: $challenge_dir" >&2
