@@ -152,7 +152,7 @@ func readRedis() {
 				p(err)
 				log.Println("found check_type_of key:", key, "| value:", checkTypeOfValue)
 			} else if expiryMillis == 0 {
-				ttl, err := client.PTTL(ctx, key).Result()
+				ttl, err := client.PExpireTime(ctx, key).Result()
 				p(err)
 				if ttl.Milliseconds() > 0 {
 					expiryMillis = ttl.Milliseconds()
