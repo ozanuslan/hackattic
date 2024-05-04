@@ -5,6 +5,7 @@
 
 set -euo pipefail
 
+challenge="backup_restore"
 img_name="hackattic_backup_restore"
 
 if ! command -v docker &>/dev/null; then
@@ -17,4 +18,4 @@ if [[ -z "$(docker images -q "$img_name")" || -n "${CLEAN_BUILD:-}" ]]; then
     docker build --label "$img_name" -t "$img_name" . >&2
 fi
 
-docker run -i --rm "$img_name" <&0 2> >(while read -r line; do echo "[container] $line" >&2; done)
+docker run -i --rm --name="$challenge" "$img_name" <&0 2> >(while read -r line; do echo "[container] $line" >&2; done)

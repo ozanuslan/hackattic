@@ -22,9 +22,9 @@ host    all             all             ::1/128             trust
 #host    replication     postgres        ::1/128                 ident
 CONFIG
 
-service postgresql restart >&2
+service postgresql restart > >(while read -r line; do echo "[sysvinit] $line" >&2; done)
 
-/usr/local/bin/backup_restore decode </dev/stdin | psql >&2
+/usr/local/bin/backup_restore decode </dev/stdin | psql > >(while read -r line; do echo "[psql] $line" >&2; done)
 
 export PGUSER=postgres
 export PGHOST=localhost
