@@ -42,7 +42,7 @@ kata_out_buf=$(cat "$kata_out")
 
 if [ "$program_out_buf" = "$kata_out_buf" ]; then
     echo "OK" >&2
-    echo "==== Output ===="
+    echo "==== Output ====" >&2
     echo "$program_out_buf"
 else
     echo "FAIL" >&2
